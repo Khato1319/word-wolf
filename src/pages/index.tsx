@@ -1,9 +1,6 @@
 import Head from 'next/head'
-import Image from 'next/image'
-import { Inter } from 'next/font/google'
-import styles from '/src/styles/Home.module.css'
+import Link from 'next/link'
 
-const inter = Inter({ subsets: ['latin'] })
 
 export default function Home() {
   return (
@@ -18,7 +15,7 @@ export default function Home() {
        <h1>
         WordWolf
        </h1>
-       <button className='bg-red-300 rounded-sm p-1'>Play!</button>
+       <Link href='/play' className='bg-red-300 rounded-sm p-1'>Play!</Link>
       </div>
     </>
   )
