@@ -54,7 +54,10 @@ export default function Play() {
     const savePlayersAndStartGame = () => {
         const playersString = players.filter(p => p.text !== "").map(p => new Player(p.text, 0)).join(';')
         localStorage.setItem(PLAYERS_KEY, playersString)
-        
+        router.push({
+            pathname: '/playing',
+            query: {[PLAYERS_KEY]: playersString},
+          })
     }
 
     if (showDialog && typeof router.query[PLAYERS_KEY] === 'string') {
