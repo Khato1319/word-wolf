@@ -1,6 +1,7 @@
 import type { AppProps } from 'next/app'
 import { useEffect, useState } from 'react'
 import { Player } from 'src/model/Player'
+import StandardButton from './StandardButton'
 
 interface WordShowingProps {
   players: Player[],
@@ -20,12 +21,14 @@ export default function WordShowing({players, onFinish}:WordShowingProps) {
     return <></>
   }
 
-    return <div className='bg-blue-500 w-1/2 h-1/2 rounded-md flex flex-col items-center justify-center gap-2'>
+    return <div className='text-lg w-1/2 h-1/2 flex flex-col items-center justify-center gap-2'>
       <h1>{`Give the phone to ${players[currIdx].name}`}</h1>
-      <button onClick={()=>setIdxShowValue(currIdx, true)} className={`w-fit p-1 rounded-sm bg-red-300 ${show[currIdx] ? 'cursor-default opacity-50': ''}`}>Reveal word</button>
+      <StandardButton onClick={()=>setIdxShowValue(currIdx, true)} disabled={show[currIdx]}>Reveal word</StandardButton>
       {show[currIdx] ? <div>
         {`Your word is: ${players[currIdx].word}`}
       </div> : <></>}
-      <button onClick={() => show[currIdx] && setCurrIdx(i => i+1)} className={`w-fit p-1 rounded-sm bg-red-300 ${!show[currIdx] ? 'cursor-default opacity-50': ''}`}>{currIdx === players.length-1 ? 'Start playing!' : 'Go to the next person'}</button>
+      <StandardButton disabled={!show[currIdx]} onClick={() => show[currIdx] && setCurrIdx(i => i+1)}>
+      {currIdx === players.length-1 ? 'Start playing!' : 'Go to the next person'}
+      </StandardButton>
     </div>
   }
