@@ -7,12 +7,12 @@ import { Player } from 'src/model/Player';
 
 interface Input {
     id: number;
-    text: string
+    text: string|undefined
 }
  
 
 export default function Play() {
-    const [players, setPlayers] = useState<Input[]>([{id: 0, text: ""}])
+    const [players, setPlayers] = useState<Input[]>([{id: 0, text: undefined}])
     const [showDialog, setShowDialog] = useState(true)
     const [id, setId] = useState(1)
     const router = useRouter()
@@ -39,8 +39,18 @@ export default function Play() {
         return set.size === names.length;
     }
 
+    const noEmptyPlayer = () => {
+        const names = players.map(p => p.text)
+        return !names.includes('')
+    }
+
+    const allPlayersFilled = () => {
+        const names = players.map(p => p.text)
+        return !names.includes(undefined)
+    }
+
     const addInput = () => {
-        setPlayers(p => [...p, {id, text: ""}])
+        setPlayers(p => [...p, {id, text: undefined}])
         setId(id => id+1)
     }
 
@@ -62,7 +72,7 @@ export default function Play() {
 
     if (showDialog && typeof router.query[PLAYERS_KEY] === 'string') {
         return <div className='w-full flex justify-center items-center'>
-            <div className='w-fit h-fit rounded-md p-2  bg-gray-400'>
+            <div className='w-fit h-fit rounded-md p-2  bg-black'>
             <h2>Continue same session?</h2>
             <div className='flex justify-between'>
                 <button className='p-1 w-fit bg-blue-300 rounded-md' onClick={resumeSession}>Continue</button>
@@ -72,12 +82,18 @@ export default function Play() {
         </div>
     }
 
-    return <div className='bg-gray-500 w-full flex flex-col justify-center items-center'>
+    return <div className='bg-black w-full flex flex-col justify-center items-center'>
       <h2 className='w-full text-center text-xl p-1'>Players:</h2>
       <div className='flex justify-center flex-col items-center w-full'>
         {players.map((p, idx) => <NameInput onChange={(e) => handleChange(idx, e)} key={p.id} text={p.text}/>)}
       </div>
       <button onClick={addInput} className='bg-blue-300 p-1 rounded-md m-2 w-8'>+</button>
-      <button onClick={() => arePlayersUnique() && savePlayersAndStartGame()}  className={`bg-red-300 p-1 rounded-md m-2 w-fit mt-4 ${arePlayersUnique() ? '' : 'cursor-default opacity-50'}`}>Start game!</button>
+      <button onClick={() => arePlayersUnique() && noEmptyPlayer() && allPlayersFilled() && savePlayersAndStartGame()}  className={`bg-red-300 text-lg p-1 rounded-md m-2 w-fit mt-4 ${arePlayersUnique() ? '' : 'cursor-default opacity-50'}`}>Start game!</button>
+      {arePlayersUnique() ? <></> : <div className='text-red-400'>
+        The names have to be unique
+        </div>}
+        {noEmptyPlayer() ? <></> : <div className='text-red-400'>
+        Names cannot be empty
+        </div>}
     </div>
   }
