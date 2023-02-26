@@ -61,7 +61,10 @@ export default function Playing() {
             return <WordShowing onFinish={() => setPlayingState(PlayingState.PLAYING)} players={players}></WordShowing>
             break
         case PlayingState.PLAYING:
-            return <Timer onFinish={() => setPlayingState(PlayingState.VOTING)} seconds={10}></Timer>
+            return <div className='flex flex-col gap-2 justify-center items-center'>
+            <h1 className='text-2xl font-bold'>Start talking!</h1>
+            <Timer onFinish={() => setPlayingState(PlayingState.VOTING)} seconds={10}></Timer>
+            </div>
             break
         case PlayingState.VOTING:
                 return <VotingCards players={players} wolf={wolf}></VotingCards>
@@ -74,7 +77,7 @@ export default function Playing() {
     if(!router.isReady)
         return <></>
 
-    return <div className='bg-gray-500 w-full flex flex-col justify-center items-center'>   
+    return <div className='bg-black w-full flex flex-col justify-center items-center'>   
       {getViewBasedOnState()}
     </div>
   }

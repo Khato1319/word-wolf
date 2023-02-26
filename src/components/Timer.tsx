@@ -17,7 +17,7 @@ function Timer({ seconds, onFinish }:TimerProps) {
     return () => clearInterval(intervalId);
   }, [timeLeft]);
 
-  return <div>{timeLeft} seconds left</div>;
+  return <div className="text-lg">{timeLeft} seconds left</div>;
 }
 
 export default Timer;
